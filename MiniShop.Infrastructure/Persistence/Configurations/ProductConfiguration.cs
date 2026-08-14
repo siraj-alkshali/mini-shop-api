@@ -11,5 +11,12 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.HasKey(product => product.Id);
         builder.Property(product => product.Name).HasMaxLength(100).IsRequired();
         builder.Property(product => product.Price).HasPrecision(10, 2);
+        builder.HasData(new Product
+        {
+            Id = 1,
+            Name = "Laptop",
+            StockQuantity = 10,
+            Price = 999.99m
+        });
     }
 }
