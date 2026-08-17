@@ -6,4 +6,8 @@ public class Product
     public string Name { get; set; } = string.Empty;
     public int StockQuantity { get; set; }
     public decimal Price { get; set; }
+
+    // Navigation properties
+
+    public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 }

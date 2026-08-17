@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MiniShop.Application.DTOs.Products;
 using MiniShop.Application.Services;
-using MiniShop.Domain.Entities;
 
 namespace MiniShop.Api.Controllers;
 
@@ -23,10 +22,7 @@ public class ProductsController : ControllerBase
     {
         ProductDto? product = await _productService.GetByIdAsync(productId);
 
-        if (product is null)
-            return NotFound();
-
-        return Ok(product);
+        return product is null ? NotFound() : Ok(product);
     }
 
     [HttpPost]
@@ -45,10 +41,7 @@ public class ProductsController : ControllerBase
     {
         ProductDto? updatedProduct = await _productService.UpdateAsync(productId, request);
 
-        if (updatedProduct is null)
-            return NotFound();
-
-        return Ok(updatedProduct);
+        return updatedProduct is null ? NotFound() : Ok(updatedProduct);
     }
 
     [HttpDelete("{productId:int}")]
@@ -58,9 +51,6 @@ public class ProductsController : ControllerBase
     {
         bool deleted = await _productService.DeleteAsync(productId);
 
-        if (!deleted)
-            return NotFound();
-
-        return NoContent();
+        return !deleted ? NotFound() : NoContent();
     }
 }
