@@ -10,7 +10,15 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
         builder.HasKey(order => order.Id);
 
-        builder.Property(x => x.Status).HasConversion<string>();
+        builder.HasOne(order => order.Customer)
+        .WithMany(customer => customer.Orders)
+        .HasForeignKey(order => order.CustomerId)
+        .OnDelete(DeleteBehavior.Restrict)
+        .IsRequired();
+
+        builder.Property(order => order.Status).HasConversion<string>();
+
+        builder.Property(order => order.DiscountType).HasConversion<string>();
 
         builder.Property(order => order.ShippingCost).HasPrecision(10, 2);
 

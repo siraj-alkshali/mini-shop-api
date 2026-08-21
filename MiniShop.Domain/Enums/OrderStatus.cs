@@ -1,6 +1,6 @@
 namespace MiniShop.Domain.Enums;
 
-public enum enOrderStatus
+public enum OrderStatus
 {
     Pending,
     Confirmed,

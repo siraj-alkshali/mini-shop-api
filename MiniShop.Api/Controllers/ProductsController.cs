@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MiniShop.Application.DTOs.Common;
 using MiniShop.Application.DTOs.Products;
 using MiniShop.Application.Services;
 
@@ -15,6 +16,13 @@ public class ProductsController : ControllerBase
         _productService = productService;
     }
 
+    [HttpGet]
+    [ProducesResponseType(typeof(PagedResult<ProductDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<PagedResult<ProductDto>>> GetAll([FromQuery] ProductQueryParameters parameters)
+    {
+        return Ok(await _productService.GetProductsAsync(parameters));
+    }
+
     [HttpGet("{productId:int}")]
     [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -27,6 +35,7 @@ public class ProductsController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(ProductDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<ProductDto>> Create(CreateProductRequest request)
     {
         ProductDto product = await _productService.CreateAsync(request);
@@ -36,6 +45,7 @@ public class ProductsController : ControllerBase
 
     [HttpPut("{productId:int}")]
     [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProductDto>> Update(int productId, UpdateProductRequest request)
     {

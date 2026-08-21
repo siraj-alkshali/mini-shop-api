@@ -1,6 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using MiniShop.Application.DTOs.Products;
 using MiniShop.Application.Interfaces;
 using MiniShop.Domain.Entities;
 using MiniShop.Infrastructure.Persistence;
+using MiniShop.Infrastructure.Persistence.Extensions;
 
 namespace MiniShop.Infrastructure.Repositories;
 
@@ -18,19 +21,14 @@ public class ProductRepository : IProductRepository
         return await _context.Products.FindAsync(productId);
     }
 
-    public async Task<Product> AddAsync(Product product)
+    public async Task AddAsync(Product product)
     {
         await _context.Products.AddAsync(product);
-        await _context.SaveChangesAsync();
-
-        return product;
     }
 
-    public async Task<Product?> UpdateAsync(Product product)
+    public async Task UpdateAsync(Product product)
     {
         await _context.SaveChangesAsync();
-
-        return product;
     }
 
     public async Task<bool> DeleteAsync(int productId)
@@ -45,5 +43,29 @@ public class ProductRepository : IProductRepository
         await _context.SaveChangesAsync();
 
         return true;
+    }
+
+    public async Task<List<Product>> GetByIdsAsync(IEnumerable<int> productsIds)
+    {
+        return await _context.Products
+        .Where(product => productsIds.Contains(product.Id))
+        .ToListAsync();
+    }
+
+    public async Task<(List<Product> Items, int TotalItems)> GetProductsAsync(ProductQueryParameters parameters)
+    {
+        IQueryable<Product> query = _context.Products
+        .AsNoTracking()
+        .ApplySearch(parameters.SearchTerm)
+        .ApplyFilter(parameters)
+        .ApplySort(parameters);
+
+        int totalItems = await query.CountAsync();
+
+        List<Product> items = await query
+        .ApplyPagination(parameters)
+        .ToListAsync();
+
+        return (items, totalItems);
     }
 }

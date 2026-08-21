@@ -6,13 +6,13 @@ public class Order
 {
     public int Id { get; set; }
 
-    // public int CustomerId { get; set; }
+    public int CustomerId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
-    public enOrderStatus Status { get; set; }
+    public OrderStatus Status { get; set; }
 
-    // public decimal Subtotal { get; set; }
+    public DiscountType DiscountType { get; set; }
 
     public decimal ShippingCost { get; set; }
 
@@ -20,5 +20,9 @@ public class Order
 
     // Navigation properties
 
-    public ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();
+    public Customer Customer { get; set; } = null!;
+
+    public CouponUsage? CouponUsage { get; set; }
+
+    public ICollection<OrderItem> Items { get; set; } = [];
 }

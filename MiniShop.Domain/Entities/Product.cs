@@ -9,5 +9,5 @@ public class Product
 
     // Navigation properties
 
-    public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    public ICollection<OrderItem> OrderItems { get; set; } = [];
 }

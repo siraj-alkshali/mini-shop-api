@@ -20,6 +20,14 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IProductRepository, ProductRepository>();
 
+        services.AddScoped<ICouponRepository, CouponRepository>();
+
+        services.AddScoped<ICouponUsageRepository, CouponUsageRepository>();
+
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+
+        services.AddScoped<IOrderRepository, OrderRepository>();
+
         return services;
     }
 }

@@ -4,4 +4,4 @@ public record CreateProductRequest(
     string Name,
     int StockQuantity,
     decimal Price
-);
+) : IProductRequest;
